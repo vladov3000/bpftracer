@@ -23,6 +23,14 @@
             "match": "\\b(sizeof|offset|printf)\\b"
         },
         {
+            "name": "constant.numeric.bpftrace",
+            "match": "\\b(0[xX][0-9a-fA-F]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?[eE][0-9]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?)\\b"
+        },
+        {
+            "name": "string.regexp.bpftrace",
+            "match": "([_a-zA-Z][_a-zA-Z0-9]+\\s*:?\\s*)+\\s*/|/\\s*(?=\\{)"
+        },
+        {
             "name": "variable.other.bpftrace",
             "match": "(@|$)?[_a-zA-Z][_a-zA-Z0-9]*"
         },
@@ -90,14 +98,6 @@
                     "match": "\\n"
                 }
             ]
-        },
-        {
-            "name": "constant.numeric.bpftrace",
-            "match": "\\b(0[xX][0-9a-fA-F]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?[eE][0-9]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?)\\b"
-        },
-        {
-            "name": "string.unquoted.path.bpftrace",
-            "match": "(\\\\.|[_\\-./a-zA-Z0-9#$+\\*])+"
         }
     ]
 }

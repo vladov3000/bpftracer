@@ -11,14 +11,14 @@ export async function complete(documents: TextDocuments<TextDocument>, parameter
 
     const attachPoint = getAttachPoint(document, parameters.position);
     const { stdout } = runBpftrace(["bpftrace", "-l", `${attachPoint}*`], ["ignore", "pipe", "ignore"]);
-    return getCompletions(stdout!);
+    return getCompletions(stdout!, attachPoint);
 }
 
-async function getCompletions(stdout: readline.Interface): Promise<CompletionItem[]> {
+async function getCompletions(stdout: readline.Interface, base: string): Promise<CompletionItem[]> {
     return new Promise(resolve => {
         const completions: CompletionItem[] = [];
         stdout.on("line", line => completions.push({
-            label: line,
+            label: line.slice(base.length),
             kind: CompletionItemKind.Event,
             detail: "BPF Tracepoint"
         }));
@@ -56,5 +56,9 @@ function getAttachPoint(document: TextDocument, position: Position): string {
     }
 
     output.reverse();
-    return output.join("");
+    return removeWhitespace(output.join(""));
+}
+
+function removeWhitespace(input: string): string {
+    return input.replace(/\s+/g, "");
 }
