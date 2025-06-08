@@ -15,6 +15,7 @@ export function runBpftrace(args: string[], stdio: StdioOptions): Output {
     const stdout = process.stdout === null ? null : readLines(process.stdout);
     const stderr = process.stderr === null ? null : readLines(process.stderr);
 
+    // stdout is too noisy to log all the time.
     // stdout?.on("line", line => console.log("stdout", line));
     stderr?.on("line", line => console.log("stderr", line));
     return { stdin, stdout, stderr };
