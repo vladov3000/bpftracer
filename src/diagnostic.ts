@@ -1,6 +1,4 @@
-import { spawn } from "child_process";
 import * as readline from "readline";
-import { Readable } from "stream";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import {
     Connection,
@@ -8,11 +6,13 @@ import {
     DiagnosticSeverity,
     TextDocumentChangeEvent
 } from "vscode-languageserver/node";
+import { runBpftrace } from "./bpftrace";
 
 export async function emitDiagnostics(connection: Connection, event: TextDocumentChangeEvent<TextDocument>): Promise<void> {
     const program = event.document.getText();
 
-    const diagnostics = await runBpftrace(program);
+    const stderr = runBpftrace(program);
+    const diagnostics = await parseDiagnostics(stderr);
     if (diagnostics === null) {
         await connection.sendRequest("error");
         return;
@@ -24,45 +24,20 @@ export async function emitDiagnostics(connection: Connection, event: TextDocumen
     });
 }
 
-async function runBpftrace(program: string): Promise<Diagnostic[] | null> {
-    const process = spawn("sudo", ["bpftrace", "-c", "true", "-"], {
-        stdio: ["pipe", "pipe", "pipe"],
-        shell: false
-    });
-
-    process.stdin.write(program);
-    process.stdin.end();
-
-    const stdoutLines = readLines(process.stdout);
-    const stderrLines = readLines(process.stderr);
-
-    stdoutLines.on("line", line => {
-        console.log("stdout", line);
-    });
-
-    return new Promise(resolve => {
+async function parseDiagnostics(stderr: readline.Interface): Promise<Diagnostic[] | null> {
+    return await new Promise(resolve => {
         const diagonstics: Diagnostic[] = [];
-        stderrLines.on("line", line => onStderrLine(program, line, diagonstics, () => resolve(null)));
-        stderrLines.on("close", () => resolve(diagonstics));
+        stderr.on("line", line => onStderrLine(line, diagonstics, () => resolve(null)));
+        stderr.on("close", () => resolve(diagonstics));
     });
 }
 
-function readLines(input: Readable): readline.Interface {
-    return readline.createInterface({ input });
-}
-
-async function onStderrLine(program: string, line: string, diagnostics: Diagnostic[], onPasswordError: () => void): Promise<void> {
-    if (line.startsWith(program)) {
-        line = line.slice(program.length);
-    }
-
+async function onStderrLine(line: string, diagnostics: Diagnostic[], onPasswordError: () => void): Promise<void> {
     if (line === "sudo: a password is required") {
         onPasswordError();
     }
 
     const diagnostic = parseDiagnostic(line);
-    console.log(diagnostic);
-
     if (diagnostic !== null) {
         diagnostics.push(diagnostic);
     }
