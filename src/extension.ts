@@ -34,14 +34,14 @@ export function activate(context: ExtensionContext): void {
 
     client = new LanguageClient("bpftrace", serverOptions, clientOptions);
     client.start();
-    client.onRequest("warning", onWarning);
+    client.onRequest("error", onError);
 
     const disposable = commands.registerCommand("bpftrace.restartLanguageServer", restart);
     context.subscriptions.push(disposable);
 }
 
-async function onWarning(): Promise<void> {
-    await window.showWarningMessage(`
+async function onError(): Promise<void> {
+    await window.showErrorMessage(`
         bpftrace only supports running as the root user. Please run the following command and restart the language server:
         echo "$(whoami) ALL=(ALL) NOPASSWD: /usr/bin/bpftrace" | sudo tee /etc/sudoers.d/bpftrace-nopass
     `);

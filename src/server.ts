@@ -27,7 +27,7 @@ async function emitDiagnostics(event: TextDocumentChangeEvent<TextDocument>): Pr
 
     const diagnostics = await runBpftrace(program);
     if (diagnostics === null) {
-        await connection.sendRequest("warning");
+        await connection.sendRequest("error");
         return;
     }
 
