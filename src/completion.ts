@@ -1,9 +1,13 @@
 import * as readline from "readline";
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { CompletionItem, CompletionItemKind, Position, TextDocumentPositionParams, TextDocuments } from "vscode-languageserver/node";
+import { CompletionItem, CompletionItemKind, CompletionParams, CompletionTriggerKind, Position, TextDocuments } from "vscode-languageserver/node";
 import { runBpftrace } from "./bpftrace";
 
-export async function complete(documents: TextDocuments<TextDocument>, parameters: TextDocumentPositionParams): Promise<CompletionItem[]> {
+export async function complete(documents: TextDocuments<TextDocument>, parameters: CompletionParams): Promise<CompletionItem[]> {
+    if (parameters.context?.triggerKind !== CompletionTriggerKind.TriggerCharacter) {
+        return [];
+    }
+
     const document = documents.get(parameters.textDocument.uri);
     if (document === undefined) {
         return [];

@@ -28,7 +28,7 @@
         },
         {
             "name": "string.regexp.bpftrace",
-            "match": "([_a-zA-Z][_a-zA-Z0-9]+\\s*:?\\s*)+\\s*/|/\\s*(?=\\{)"
+            "match": "(([_a-zA-Z0-9]+\\s*:\\s*)*[_a-zA-Z0-9]+\\s*(/|(?=\\{)))|/\\s*(?=\\{)"
         },
         {
             "name": "variable.other.bpftrace",
