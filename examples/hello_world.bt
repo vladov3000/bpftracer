@@ -1,3 +1,7 @@
 BEGIN {
     printf("Hello World");
+    @start[0] = 0
+}
+
+tracepoint:syscalls:sys_enter_read {
 }

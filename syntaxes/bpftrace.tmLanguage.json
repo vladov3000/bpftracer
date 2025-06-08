@@ -1,0 +1,103 @@
+{
+    "name": "bpftrace",
+    "repository": {},
+    "fileTypes": [
+        "bt"
+    ],
+    "scopeName": "source.bpftrace",
+    "patterns": [
+        {
+            "name": "variable.language.bpftrace",
+            "match": "\\b(arg[0-9]+|args|cgroup|comm|cpid|numaid|cpu|ncpus|ctx|curtask|elapsed|func|gid|pid|probe|rand|retval|sarg[0-9]|tid|uid|usermode|username|jiffies|nsecs|kstack|ustack|BEGIN|END)\\b"
+        },
+        {
+            "name": "support.type.builtin.bpftrace",
+            "match": "\\b(void|(u)?(min|max|sum|avg|stats)_t|count_t|probe_t|username|lhist_t|hist_t|usym_t|ksym_t|timestamp|macaddr_t|cgroup_path_t|strerror_t|kstack_t|ustack_t|string|bool|(u)?int(8|16|32|64)|inet|buffer)\\b"
+        },
+        {
+            "name": "keyword.control.bpftrace",
+            "match": "\\b(if|else|unroll|while|while|for|return|continue|break)\\b"
+        },
+        {
+            "name": "keyword.support.function.bpftrace",
+            "match": "\\b(sizeof|offset|printf)\\b"
+        },
+        {
+            "name": "variable.other.bpftrace",
+            "match": "(@|$)?[_a-zA-Z][_a-zA-Z0-9]*"
+        },
+        {
+            "name": "comment.line.double-slash.bpftrace",
+            "begin": "//",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.comment.bpftrace"
+                }
+            },
+            "end": "$",
+            "patterns": []
+        },
+        {
+            "name": "comment.block.bpftrace",
+            "begin": "/\\*",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.comment.begin.bpftrace"
+                }
+            },
+            "end": "\\*/",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.comment.end.bpftrace"
+                }
+            },
+            "patterns": [
+                {
+                    "match": "[^*]+|\\*(?!/)",
+                    "name": "comment.block.content.bpftrace"
+                }
+            ]
+        },
+        {
+            "name": "string.quoted.double.bpftrace.bpftrace",
+            "begin": "\"",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.bpftrace"
+                }
+            },
+            "end": "\"",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.bpftrace"
+                }
+            },
+            "patterns": [
+                {
+                    "name": "constant.character.escape.bpftrace.bpftrace",
+                    "match": "\\\\([nrt\"\\\\]|x[0-9A-Fa-f]{1,2}|[0-7]{1,3})"
+                },
+                {
+                    "name": "constant.character.escape.invalid.bpftrace",
+                    "match": "\\\\."
+                },
+                {
+                    "name": "string.quoted.double.bpftrace",
+                    "match": "[^\"\\\\\\n]+"
+                },
+                {
+                    "name": "invalid.illegal.newline.bpftrace",
+                    "match": "\\n"
+                }
+            ]
+        },
+        {
+            "name": "constant.numeric.bpftrace",
+            "match": "\\b(0[xX][0-9a-fA-F]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?[eE][0-9]+|[0-9](?:[0-9_]*[0-9])?(?:([uU])|([uU]?[lL]?[lL]))?)\\b"
+        },
+        {
+            "name": "string.unquoted.path.bpftrace",
+            "match": "(\\\\.|[_\\-./a-zA-Z0-9#$+\\*])+"
+        }
+    ]
+}

@@ -27,7 +27,15 @@
                 "id": "bpftrace",
                 "extensions": [
                     ".bt"
-                ]
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "bpftrace",
+                "scopeName": "source.bpftrace",
+                "path": "./syntaxes/bpftrace.tmLanguage.json"
             }
         ]
     },
