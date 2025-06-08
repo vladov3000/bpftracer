@@ -11,8 +11,11 @@ import { runBpftrace } from "./bpftrace";
 export async function emitDiagnostics(connection: Connection, event: TextDocumentChangeEvent<TextDocument>): Promise<void> {
     const program = event.document.getText();
 
-    const stderr = runBpftrace(program);
-    const diagnostics = await parseDiagnostics(stderr);
+    const { stdin, stderr } = runBpftrace(["bpftrace", "-c", "true", "-"], ["pipe", "ignore", "pipe"]);
+    stdin!.write(program);
+    stdin!.end();
+
+    const diagnostics = await parseDiagnostics(stderr!);
     if (diagnostics === null) {
         await connection.sendRequest("error");
         return;
@@ -41,8 +44,6 @@ async function onStderrLine(line: string, diagnostics: Diagnostic[], onPasswordE
     if (diagnostic !== null) {
         diagnostics.push(diagnostic);
     }
-
-    console.log("stderr", line);
 }
 
 const diagnosticLine = /^stdin:(?<lineStart>\d+)(-(?<lineEnd>\d+))?:((?<columnStart>\d+)-(?<columnEnd>\d+):)? (?<severity>.*?): (?<message>.*)/;

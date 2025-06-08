@@ -1,23 +1,23 @@
-import { spawn } from "child_process";
+import { spawn, StdioOptions } from "child_process";
 import * as readline from "readline";
-import { Readable } from "stream";
+import { Readable, Stream } from "stream";
 
-export function runBpftrace(program: string): readline.Interface {
-    const process = spawn("sudo", ["bpftrace", "-c", "true", "-"], {
-        stdio: ["pipe", "pipe", "pipe"],
-        shell: false
-    });
+interface Output {
+    stdin: Stream.Writable | null,
+    stdout: readline.Interface | null,
+    stderr: readline.Interface | null,
+}
 
-    process.stdin.write(program);
-    process.stdin.end();
+export function runBpftrace(args: string[], stdio: StdioOptions): Output {
+    const process = spawn("sudo", args, { stdio, shell: false });
 
-    const stdoutLines = readLines(process.stdout);
-    const stderrLines = readLines(process.stderr);
+    const stdin = process.stdin;
+    const stdout = process.stdout === null ? null : readLines(process.stdout);
+    const stderr = process.stderr === null ? null : readLines(process.stderr);
 
-    stdoutLines.on("line", line => {
-        console.log("stdout", line);
-    });
-    return stderrLines;
+    // stdout?.on("line", line => console.log("stdout", line));
+    stderr?.on("line", line => console.log("stderr", line));
+    return { stdin, stdout, stderr };
 }
 
 function readLines(input: Readable): readline.Interface {
