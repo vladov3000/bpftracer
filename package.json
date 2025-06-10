@@ -6,14 +6,12 @@
     "publisher": "vladov3000",
     "repository": "https://github.com/vladov3000/bpftracer",
     "engines": {
-        "vscode": "^1.51.0"
+        "vscode": "^1.100.0"
     },
     "categories": [
         "Other"
     ],
-    "activationEvents": [
-        "onLanguage:bpftrace"
-    ],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
@@ -45,13 +43,14 @@
         "watch": "tsc --watch --project ./"
     },
     "dependencies": {
-        "vscode-languageserver": "^9.0.1",
         "vscode-languageclient": "^9.0.1",
+        "vscode-languageserver": "^9.0.1",
         "vscode-languageserver-textdocument": "^1.0.12"
     },
     "devDependencies": {
         "@types/node": "^22.15.30",
         "@types/vscode": "^1.100.0",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "vsce": "^2.15.0"
     }
 }
