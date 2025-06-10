@@ -4,7 +4,10 @@
     "description": "Create and run bpftrace programs from VSCode.",
     "version": "0.0.1",
     "publisher": "vladov3000",
-    "repository": "https://github.com/vladov3000/bpftracer",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vladov3000/bpftracer"
+    },
     "engines": {
         "vscode": "^1.100.0"
     },
