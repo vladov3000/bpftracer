@@ -15,7 +15,7 @@ function initialize(_: InitializeParams): InitializeResult {
         capabilities: {
             textDocumentSync: TextDocumentSyncKind.Incremental,
             completionProvider: {
-                triggerCharacters: [":"]
+                triggerCharacters: [":", "$", "@"]
             }
         },
     };
