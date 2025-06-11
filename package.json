@@ -2,7 +2,7 @@
     "name": "bpftracer",
     "displayName": "bpftracer",
     "description": "Create and run bpftrace programs from VSCode.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "vladov3000",
     "icon": "icon.png",
     "repository": {
