@@ -1,0 +1,9 @@
+**
+!out/extension.js
+!out/server.js
+!syntaxes/bpftrace.tmLanguage.json
+!language-configuration.json
+!README.md
+!package.json
+!demo.gif
+!icon.png

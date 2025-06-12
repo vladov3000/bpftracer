@@ -2,7 +2,7 @@
     "name": "bpftracer",
     "displayName": "bpftracer",
     "description": "Create and run bpftrace programs from VSCode.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "vladov3000",
     "icon": "icon.png",
     "repository": {
@@ -42,7 +42,7 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "npx esbuild src/extension.ts src/server.ts --outdir=out --bundle --platform=node --target=node18 --external:vscode",
         "compile": "tsc --project ./",
         "watch": "tsc --watch --project ./"
     },
@@ -54,6 +54,7 @@
     "devDependencies": {
         "@types/node": "^22.15.30",
         "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
         "typescript": "^5.8.3",
         "vsce": "^2.15.0"
     }
